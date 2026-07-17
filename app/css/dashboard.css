@@ -18,9 +18,11 @@ body {
 height: 100%;
 }
 .entry-list-item {
+    display: flex;
+    justify-content: space-between;
     transition: all 0.5s ease;
     border-radius: var(--space-sm);
-    padding: var(--space-md) var(--space-md);
+    padding: var(--space-xs) var(--space-md);
     background: var(--surface-secondary);
     border: 1px solid var(--border-primary);
 }
@@ -29,7 +31,10 @@ height: 100%;
     cursor: pointer;
     background: var(--hover-bg);
  }
-
+.btn.delete-btn {
+    background: var(--danger);
+padding: var(--space-sm);
+}
 .new-entry {
     width: fit-content;
 }

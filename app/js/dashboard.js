@@ -1,3 +1,4 @@
+import { toastMsg } from "./components/toast.js";
 import { supabase } from "./supabase.js";
 
 let currentEntryId = null; // null = new entry, otherwise = editing existing
@@ -21,14 +22,39 @@ async function loadEntries() {
   }
 
   entryList.innerHTML = "";
-  data.forEach((entry) => {
-    const item = document.createElement("div");
-    item.className = "entry-list-item";
-    item.dataset.id = entry.id;
-    item.textContent = entry.title;
-    item.addEventListener("click", () => loadEntryIntoEditor(entry));
-    entryList.appendChild(item);
+data.forEach((entry) => {
+  const item = document.createElement("div");
+  item.className = "entry-list-item";
+  item.dataset.id = entry.id;
+
+  const title = document.createElement("p");
+  title.textContent = entry.title;
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.classList.add("btn", "delete-btn");
+  deleteBtn.textContent = "🗑️";
+
+  deleteBtn.addEventListener("click", async (e) => {
+    e.stopPropagation(); // prevent bubbling to item's click handler
+
+    const { error } = await supabase
+      .from("entries")
+      .delete()
+      .eq("id", entry.id);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    if (currentEntryId === entry.id) clearEditor(); // if you're editing the one you just deleted
+    loadEntries();
   });
+
+  item.append(title, deleteBtn);
+  item.addEventListener("click", () => loadEntryIntoEditor(entry));
+  entryList.appendChild(item);
+});
 }
 
 function loadEntryIntoEditor(entry) {
@@ -53,7 +79,7 @@ saveBtn.addEventListener("click", async () => {
   const type = entryType.value;
 
   if (!title || !content) {
-    // show a toast — you already have toast.css linked
+    await toastMsg("You can't submit empty content", "error")
     return;
   }
 
