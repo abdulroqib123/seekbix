@@ -22,8 +22,15 @@
       top: 0;
       backdrop-filter: var(--filter);
     }
-    .nav .logo { font-size: 1.4rem; margin: 0; }
-    .nav .logo .accent { color: var(--primary); }
+    .logo {
+  font-size: 1.4rem;
+  margin: 0;
+}
+.logo span {
+  background: var(--gradient);
+  background-clip: text;
+  color: transparent;
+}
     .nav a { font-size: 0.95rem; color: var(--text-secondary); }
 
     .hero {
@@ -38,7 +45,10 @@
       letter-spacing: -0.02em;
       margin-bottom: var(--space-md);
     }
-    .hero h1 .accent { color: var(--primary); }
+    .hero h1 .accent {
+      color: var(--primary-light);
+      border-bottom: 5px solid var(--primary);
+      }
     .hero p.sub {
       color: var(--text-secondary);
       font-size: 1.1rem;
@@ -190,7 +200,7 @@
 
   <main class="hero">
     <h1>Stop searching your inbox.<br />Start typing <span class="accent">one query</span>.</h1>
-    <p class="sub">SeekBix is one search bar over everything your team has written down — notes, docs, FAQs. No more digging through five tools to find one answer.</p>
+    <p class="sub">SeekBix is one search bar over everything your team has written down. Notes, docs, FAQs. No more digging through five tools to find one answer.</p>
 
     <div class="cta-row">
       <a href="app/auth/signup.html" class="btn-primary">Create your workspace</a>
