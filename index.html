@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SeekBix — Find anything your team wrote down</title>
+
+  <link rel="stylesheet" href="app/css/base.css" />
+  <link rel="stylesheet" href="app/css/components/buttons.css" />
+
+  <style>
+    body { overflow-x: hidden; }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--space-md) var(--space-xl);
+      max-width: 1100px;
+      margin: 0 auto;
+      position: sticky;
+      top: 0;
+      backdrop-filter: var(--filter);
+    }
+    .nav .logo { font-size: 1.4rem; margin: 0; }
+    .nav .logo .accent { color: var(--primary); }
+    .nav a { font-size: 0.95rem; color: var(--text-secondary); }
+
+    .hero {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-lg) var(--space-lg);
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-md);
+    }
+    .hero h1 .accent { color: var(--primary); }
+    .hero p.sub {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      max-width: 480px;
+      margin: 0 auto var(--space-xl);
+    }
+
+    .cta-row {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      margin-bottom: var(--space-xl);
+    }
+    .cta-row a {
+        text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.95rem;
+            color: #05130c;
+
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #05130c;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--border-primary);
+    }
+
+    /* SIGNATURE: live search demo */
+    .search-demo {
+      max-width: 560px;
+      margin: 0 auto;
+      background: var(--surface-primary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      padding: var(--space-md);
+      text-align: left;
+      box-shadow: var(--shadow);
+    }
+    .search-demo .bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 0.6rem 0.8rem;
+      background: var(--input-bg);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-sm);
+    }
+    .search-demo .bar svg { flex-shrink: 0; color: var(--muted); }
+    .search-demo .typed {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid var(--primary);
+      width: 0;
+      animation: type 2.5s steps(22) 0.6s forwards, blink 0.8s step-end infinite;
+    }
+    .search-demo .kbd {
+      margin-left: auto;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      border: 1px solid var(--border-secondary);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .search-demo .results {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .search-demo .result {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.55rem 0.7rem;
+      border-radius: var(--radius-sm);
+      opacity: 0;
+      animation: reveal 0.4s ease forwards;
+    }
+    .search-demo .result:nth-child(1) { animation-delay: 2.6s; }
+    .search-demo .result:nth-child(2) { animation-delay: 2.85s; }
+    .search-demo .result:nth-child(3) { animation-delay: 3.1s; }
+    .search-demo .result:hover { background: var(--hover-bg); }
+    .search-demo .result .title { font-size: 0.9rem; color: var(--text-primary); }
+    .search-demo .result .type {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    @keyframes type {
+      to { width: 13ch; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    @keyframes reveal {
+      to { opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .search-demo .typed { animation: none; width: 21ch; border-right: none; }
+      .search-demo .result { animation: none; opacity: 1; }
+    }
+
+    .features {
+      max-width: 900px;
+      margin: var(--space-xl) auto 0;
+      padding: var(--space-xl) var(--space-lg);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--space-lg);
+      border-top: 1px solid var(--border-primary);
+    }
+    .feature {
+        background-color: var(--surface-primary);
+        padding: var(--space-sm);
+        border-radius: var(--radius-sm);
+    }
+    .feature h3 { font-size: 1.05rem; margin-bottom: var(--space-xs); }
+    .feature p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+
+    footer {
+      text-align: center;
+      padding: var(--space-xl) var(--space-lg);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    a:focus-visible, button:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <p class="logo">Seek<span class="accent">Bix</span></p>
+    <a href="app/auth/">Log in</a>
+  </nav>
+
+  <main class="hero">
+    <h1>Stop searching your inbox.<br />Start typing <span class="accent">one query</span>.</h1>
+    <p class="sub">SeekBix is one search bar over everything your team has written down — notes, docs, FAQs. No more digging through five tools to find one answer.</p>
+
+    <div class="cta-row">
+      <a href="app/auth/signup.html" class="btn-primary">Create your workspace</a>
+      <a href="app/auth/login.html" class="btn-ghost">Log in</a>
+    </div>
+
+    <div class="search-demo">
+      <div class="bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <span class="typed">refund policy</span>
+        <span class="kbd">⌘K</span>
+      </div>
+      <div class="results">
+        <div class="result"><span class="title">Customer Refund Policy</span><span class="type">FAQ</span></div>
+        <div class="result"><span class="title">Refund Processing Steps</span><span class="type">Doc</span></div>
+        <div class="result"><span class="title">Q3 refund rate notes</span><span class="type">Note</span></div>
+      </div>
+    </div>
+  </main>
+
+  <section class="features">
+    <div class="feature">
+      <h3>Instant, not eventual</h3>
+      <p>Results as you type. No page reloads, no waiting on a slow index.</p>
+    </div>
+    <div class="feature">
+      <h3>Private by default</h3>
+      <p>Every workspace is isolated. Your entries are never visible to anyone else.</p>
+    </div>
+    <div class="feature">
+      <h3>No setup tax</h3>
+      <p>No folders to build, no tags to invent first. Write it down, find it later.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built for the Blueprint Hackathon, 2026.</p>
+  </footer>
+</body>
+</html>
