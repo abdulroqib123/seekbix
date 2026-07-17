@@ -33,7 +33,7 @@ height: 100%;
     background: var(--hover-bg);
  }
 .btn.delete-btn {
-    background: var(--danger);
+    background: var(--warning);
 padding: var(--space-sm);
 }
 .new-entry {
