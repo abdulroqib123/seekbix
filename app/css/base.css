@@ -1,0 +1,151 @@
+
+/*RESET*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/*VARIABLES*/
+
+/*DEFAULT THEME*/
+:root {
+    /* BACKGROUNDS */
+  --bg-primary: #000;
+  --bg-secondary: #151821;
+  --surface-primary: #1a1a1a;
+  --surface-secondary: #151515;
+  
+  /* TEXT */
+  --text-primary: #f5f7fa;
+  --text-secondary: #d1d5db;
+  --muted: #9b9b9b;
+
+    /* INPUTS */
+  --input-bg: #1c1c1c;
+  --input-color: #ffffff;
+
+    /* BORDERS */
+  --border-primary: #2c2f36;
+  --border-secondary: #3a3d45;
+
+  --form-bg: #111;
+  --card-bg: #151515;
+  --main-content-bg: #1a1a1a45;
+  --header-bg: rgba(128, 128, 128, 0.258);
+  --navBtn-bg: #222;
+  --neutral: #9ca3af;
+  --link: #0393d6;
+  
+  --primary: #00bf63;
+--primary-light: #2fe085;
+
+--accent: #2fb1e0;
+--accent-dark: #0076a1;
+
+  --filter: blur(10px);
+
+  --active: #393838;
+  --hover-bg: #201f1f;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  /* STATES */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #e56458;
+
+    /* RADIUS */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 28px;
+
+    /* SPACING */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  
+--font-poppins: "Poppins", sans-serif;
+  --gradient: linear-gradient(to right, var(--primary), var(--accent));
+}
+
+/*HTML AND BODY*/
+html,
+body {
+  width: 100%;
+  height: 100vh;
+  max-height: 100dvh;
+}
+
+/*Smooth text rendering*/
+body {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  font-family: var(--font-poppins);  
+  -moz-osx-font-smoothing: grayscale;
+}
+.main-content {
+    padding: 0;
+  }
+  .main-content-inner {
+  padding: 0 var(--space-lg);
+
+}
+ 
+/*TYPOGRAPHY */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.statsName {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+p {
+  margin-bottom: var(--space-md);
+}
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.logo {
+  font-size: 2rem;
+  font-family: var(--font-chewy);  
+  font-weight: 600;
+  text-align: center;
+  margin-top: var(--space-md);
+}
+.logo span {
+  background: var(--gradient);
+  background-clip: text;
+  color: transparent;
+}
+.divider {
+  background: var(--muted);
+  color: var(--muted);
+  display: block;
+  width: 100%;
+  height: 1px;
+}
+a .logo:hover {
+  text-decoration: none;
+}
+.sidebar {
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+img {
+  image-rendering: auto;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

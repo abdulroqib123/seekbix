@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | SeekBix</title>
+
+    <!--CSS LINKS-->
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/components/forms.css" />
+    <link rel="stylesheet" href="../css/components/buttons.css" />
+ <link rel="stylesheet" href="../css/components/toast.css" />
+ 
+    <style>
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .authContainer {
+        max-width: 600px;
+        width: 100%;
+        margin: 0 auto;
+        padding: var(--space-md);
+        text-align: center;
+      }
+      p {
+        margin-bottom: 2rem;
+      }
+
+      .form {
+        align-items: flex-start;
+        border-radius: var(--space-md);
+      }
+      .display {
+        gap: 10px;
+        display: flex;
+      }
+    
+    </style>
+  </head>
+  <body>
+    <div id="modalContainer"></div>
+    <!--TOAST MESSAGES-->
+    <div id="toast"></div>
+    <!--INFO DISPLAY-->
+    <div id="infoDisplay"></div>
+
+    <main class="main">
+      <h1>
+        <span class="logo">Seek<span>Bix</span></span>
+      </h1>
+      <p class="text-muted">
+        Login to resume to your business knowledge base
+      </p>
+
+      <div class="authContainer">
+        <!--LOGIN FORM-->
+        <form class="form" id="loginForm">
+          <h2 class="text-center" style="align-self: center">Login</h2>
+
+          <label for="userLoginEmailInput">Email</label>
+          <input
+            type="email"
+            name="userLoginEmailInput"
+            id="userLoginEmailInput"
+            class="inputField"
+            placeholder="e.g. example@gmail.com"
+            required
+          />
+          <label for="userLoginPasswordInput">Password</label>
+          <input
+            type="password"
+            name="userLoginPasswordInput"
+            id="userLoginPasswordInput"
+            class="inputField"
+            placeholder="Your account password"
+            required
+          />
+          <button class="btn btn-pill" id="loginBtn" type="submit">Login</button>
+          <div class="formActions">
+            <a href="signup.html">New User</a>
+          </div>
+        </form>
+
+
+      </div>
+    </main>
+
+    <script type="module" src="../js/auth/login.js"></script>
+  </body>
+</html>

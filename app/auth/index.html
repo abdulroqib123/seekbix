@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth | SeekBix</title>
+
+    <!--CSS LINKS-->
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/components/forms.css" />
+    <link rel="stylesheet" href="../css/components/buttons.css" />
+
+
+    <style>
+      main {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .authGateway {
+        max-width: 460px;
+        width: 100%;
+        margin: 0 auto;
+        padding: var(--space-md);
+        text-align: center;
+      }
+
+      .authGateway h1 {
+        font-size: 1.6rem;
+      }
+      p {
+        margin-bottom: 2rem;
+      }
+
+      .primaryBtn {
+        color: var(--text-primary);
+        background: var(--active);
+        margin-bottom: 0.75rem;
+      }
+      .secondaryBtn {
+        color: #fff !important;
+        background: var(--surface-primary);
+      }
+      .primaryBtn,
+      .secondaryBtn {
+        width: 100%;
+        display: block;
+        padding: 0.75rem;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .primaryBtn:hover,
+      .secondaryBtn:hover {
+        text-decoration: none;
+      }
+
+      button {
+        width: 100%;
+        display: block;
+        margin-top: 12px;
+      }
+      .divider {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1.5rem 0;
+      }
+
+      .divider span {
+        padding: 0 0.5rem;
+        color: var(--text-secondary);
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border-light);
+      }
+      .emailLogin:hover {
+        background: var(--surface-secondary);
+        border-color: var(--primary);
+        color: var(--text-primary);
+      }
+      .form {
+        margin-top: 50px;
+        display: none;
+      }
+      .display {
+        gap: 10px;
+        display: flex;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="modalContainer"></div>
+    <!--ACTION MESSAGES-->
+    <div id="actionsMessage"></div>
+    <!--INFO DISPLAY-->
+    <div id="infoDisplay"></div>
+
+    <main class="main">
+      <!-- AUTH GATEWAY -->
+      <div class="authGateway">
+
+        <h1>
+          Welcome to <span class="logo">Seek<span>Bix</span></span>
+        </h1>
+        <p class="text-muted">
+          Log in to manage your docs
+        </p>
+
+        <a href="login.html" class="primaryBtn emailLogin" id="emailLogin"
+          >Log in with Email</a
+        >
+        <a
+          href="signup.html"
+          class="secondaryBtn  emailSignup"
+          id="emailSignup"
+          >Create an Account</a
+        >
+        
+      </div>
+    </main>
+ 
+  </body>
+</html>
