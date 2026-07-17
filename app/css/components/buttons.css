@@ -78,7 +78,7 @@ button:active {
   font-weight: inherit;
   display: inline-block;
   padding: var(--space-xs) var(--space-lg);
-  font-weight: var(--font-bold);
+  font-weight: 600;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background var(--transition-slow);
@@ -97,6 +97,9 @@ button:active {
 }
 .btn-primary:hover {
   background: var(--primary-light);
+}
+.btn.btn-secondary {
+    background: var(--accent);
 }
 .btn-pill {
   border-radius: var(--radius-lg);
