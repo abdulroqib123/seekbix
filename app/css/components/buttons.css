@@ -237,3 +237,10 @@ button:disabled {
 button:disabled:active {
     transform: scale(1);
 }
+#logoutBtn {
+background:var(--danger);
+width: fit-content;
+position: absolute;
+right: var(--space-sm);
+padding: var(--space-xs) var(--space-md);
+}

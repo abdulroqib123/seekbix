@@ -62,27 +62,4 @@ export function loginFuntion() {
 }
 loginFuntion();
 
-//signout
-async function signout() {
-  const { error } = await supabase.auth.signOut();
 
-  if (error) {
-    alert(error.message);
-    return;
-  }
-  toastMsg("Logged out successfully!", "success");
-
-  setTimeout(() => {
-    window.location.href = "/auth/";
-  }, 3000);
-}
-
-export function attachSignoutEvents() {
-  document.addEventListener("click", (e) => {
-    const btn = e.target.closest("#logoutBtn");
-
-    if (btn) {
-      signout();
-    }
-  });
-}
