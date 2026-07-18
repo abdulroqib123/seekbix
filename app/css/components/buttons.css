@@ -85,6 +85,7 @@ button:active {
   color: #000000;
   background: var(--primary);
 
+  transition: background 0.3s ease;
   display: inline-flex;
   justify-content: center;
 }
@@ -100,6 +101,9 @@ button:active {
 }
 .btn.btn-secondary {
     background: var(--accent);
+}
+.btn.btn-secondary:hover {
+background: var(--accent-dark);
 }
 .btn-pill {
   border-radius: var(--radius-lg);
@@ -244,9 +248,24 @@ top: var(--space-md);
 padding: var(--space-xs) ;
 }
 #logoutBtn {
+  z-index: 1;
 width: fit-content;
 position: fixed;
 right: var(--space-sm);
 top: var(--space-sm);
 padding: var(--space-xs) ;
+}
+#menuBtn {
+  display: none;
+    z-index: 1;
+width: fit-content;
+position: fixed;
+left: var(--space-sm);
+top: var(--space-sm);
+padding: var(--space-xs) ;
+}
+@media (max-width: 768px) {
+#menuBtn {
+    display: block;
+}
 }

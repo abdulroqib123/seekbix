@@ -4,12 +4,55 @@ body {
     padding: calc(var(--space-xl) + 8px) var(--space-lg) var(--space-lg);
     gap: var(--space-sm);
 }
+@media (max-width: 768px) {
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    padding: var(--space-xl) var(--space-sm) var(--space-sm);
+    gap: var(--space-sm);
+    height: 100vh;
+  }
+#menuBtn {
+    display: block;
+}
+  aside.sidebar {
+    max-height: 35vh;
+    height: 0;
+    padding: 0;
+  }
+aside.sidebar.expand-sidebar {
+height: min(600px, 60vh);
+padding: var(--space-sm);
+}
+  .main-content {
+    min-height: 0;
+  }
+
+  .main-content-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .main-content-header-inner {
+    max-width: 100%;
+  }
+
+  .entry-type {
+    max-width: 100%;
+  }
+
+  .saveBtn {
+    align-self: flex-end;
+  }
+}
+
 .sidebar {
     position: relative;
         overflow: auto;
     border-radius: var(--radius-md);
     padding: var(--space-sm);
     background: var(--surface-primary);
+        transition: all 0.5s ease;
 }
 .entry-list {
     margin-top: var(--space-md);

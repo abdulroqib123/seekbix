@@ -135,3 +135,15 @@ saveBtn.addEventListener("click", async () => {
 });
 
 loadEntries();
+
+
+function sidebar() {
+  const sidebar = document.querySelector(".sidebar");
+const menuBtn = document.getElementById("menuBtn");
+if(!menuBtn || !sidebar) return;
+
+menuBtn.addEventListener("click", () => {
+  sidebar.classList.toggle("expand-sidebar");
+})
+}
+sidebar()
