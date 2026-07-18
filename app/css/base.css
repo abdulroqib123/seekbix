@@ -182,3 +182,13 @@ img {
   align-self: center;
   margin: var(--space-sm) 0;
 }
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: var(--filter);
+  padding: var(--space-md);
+}

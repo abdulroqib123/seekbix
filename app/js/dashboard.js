@@ -1,5 +1,6 @@
 import { toastMsg } from "./components/toast.js";
 import { supabase } from "./supabase.js";
+import { initSearch } from "./search.js";
 
 let currentEntryId = null; // null = new entry, otherwise = editing existing
 
@@ -70,6 +71,8 @@ data.forEach((entry) => {
   item.addEventListener("click", () => loadEntryIntoEditor(entry));
   entryList.appendChild(item);
 });
+
+initSearch(loadEntryIntoEditor);
 }
 
 function loadEntryIntoEditor(entry) {

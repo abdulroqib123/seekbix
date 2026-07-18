@@ -54,6 +54,7 @@ padding: var(--space-sm);
     width: fit-content;
 }
 .main-content {
+    position: relative;
     padding: var(--space-md);
     overflow: auto;
     background: var(--surface-secondary);
