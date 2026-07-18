@@ -25,6 +25,21 @@ export function initSearch(onSelect) {
     cancelSearchBarBtn.replaceWith(searchBtn);
   }
 
+  //KEAYBOARD COMMAND
+  document.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      searchBtn.click();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      cancelSearchBarBtn.click();
+    }
+  });
+
   searchBtn.addEventListener("click", async () => {
     await loadComponent("../components/modals/search.html", "modalContainer");
     handleSearch(closeSearch);

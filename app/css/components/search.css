@@ -32,15 +32,19 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  
 }
 
 .search-result-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.65rem 0.75rem;
+  padding: var(--space-md) var(--space-sm);
   border-radius: var(--radius-sm);
   cursor: pointer;
+  background: var(--surface-primary);
+
+  transition: background 0.2s ease;
 }
 
 .search-result-item:hover {
