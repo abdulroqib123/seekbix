@@ -3,7 +3,7 @@ import { loadComponent } from "../components/loadComponent.js";
 export async function toastMsg(message, typeClass) {
   // Load modal only when needed
   await loadComponent(
-    "../components/modals/toast.html",
+    "../components/toast.html",
     "toast",
   );
 
