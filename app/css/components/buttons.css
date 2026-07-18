@@ -216,18 +216,10 @@ right: var(--space-sm);
 top: var(--space-md);
 padding: var(--space-xs) ;
 }
-.search-btn:hover::before {
-  opacity: 1;
-  min-width: 250px;
-
-} 
-.search-btn::before {
-  content: "Press CTRL + k to open search bar";
+.search-btn::before,
+.cancel-search-btn::before {
   position: absolute;
   top: 0;
-  overflow-y: hidden;
-  max-height: 15px;
-  width: 0;
   right: var(--space-lg);
   background: var(--warning);
   color: #000;
@@ -235,31 +227,17 @@ padding: var(--space-xs) ;
   padding: var(--space-xs);
   border-radius: var(--radius-sm);
   opacity: 0;
+  width: max-content;
   transition: opacity 0.4s ease;
-
+  pointer-events: none;
 }
 
-.cancel-search-btn:hover::before {
+.search-btn::before { content: "Press Ctrl + K to open search"; }
+.cancel-search-btn::before { content: "Press Esc to close search"; }
+
+.search-btn:hover::before, .search-btn:focus-visible::before,
+.cancel-search-btn:hover::before, .cancel-search-btn:focus-visible::before {
   opacity: 1;
-  min-width: 250px;
-
-} 
-.cancel-search-btn::before {
-  content: "Press ESC to close search bar";
-  position: absolute;
-  top: 0;
-  overflow-y: hidden;
-  max-height: 15px;
-  width: 0;
-  right: var(--space-lg);
-  background: var(--warning);
-  color: #000;
-  font-weight: 600;
-  padding: var(--space-xs);
-  border-radius: var(--radius-sm);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-
 }
 
 #logoutBtn {
