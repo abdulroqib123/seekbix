@@ -159,37 +159,6 @@ backdrop-filter: var(--filter) brightness(10%);
 .icon-btn:hover {
   background: rgba(255, 255, 255, 0.08);
 }
-
-
-/* Toggle Button */
-.menuToggle {
-  opacity: 0;
-  position: absolute;
-  top: var(--space-sm);
-  right: var(--space-sm);
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  background: var(--card-bg);
-  color: var(--color);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    border-color 0.2s,
-    opacity 0.2s;
-}
-
-.menuToggle:hover {
-  background: var(--active);
-  border-color: var(--primary);
-}
-
-
 .form .btn.danger {
   background: var(--surface-primary);
   color: var(--danger);
@@ -247,6 +216,52 @@ right: var(--space-sm);
 top: var(--space-md);
 padding: var(--space-xs) ;
 }
+.search-btn:hover::before {
+  opacity: 1;
+  min-width: 250px;
+
+} 
+.search-btn::before {
+  content: "Press CTRL + k to open search bar";
+  position: absolute;
+  top: 0;
+  overflow-y: hidden;
+  max-height: 15px;
+  width: 0;
+  right: var(--space-lg);
+  background: var(--warning);
+  color: #000;
+  font-weight: 600;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+
+}
+
+.cancel-search-btn:hover::before {
+  opacity: 1;
+  min-width: 250px;
+
+} 
+.cancel-search-btn::before {
+  content: "Press ESC to close search bar";
+  position: absolute;
+  top: 0;
+  overflow-y: hidden;
+  max-height: 15px;
+  width: 0;
+  right: var(--space-lg);
+  background: var(--warning);
+  color: #000;
+  font-weight: 600;
+  padding: var(--space-xs);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+
+}
+
 #logoutBtn {
   z-index: 1;
 width: fit-content;
