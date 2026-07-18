@@ -19,7 +19,7 @@
   /* TEXT */
   --text-primary: #f5f7fa;
   --text-secondary: #d1d5db;
-  --muted: #9b9b9b;
+  --text-muted: #9b9b9b;
 
     /* INPUTS */
   --input-bg: #1c1c1c;
@@ -86,6 +86,33 @@ body {
   font-family: var(--font-poppins);  
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--bg-primary); /* creates a subtle inset gap */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-secondary) var(--bg-primary);
+}
+
 .main-content {
     padding: 0;
   }
@@ -148,4 +175,10 @@ img {
   image-rendering: auto;
   backface-visibility: hidden;
   transform: translateZ(0);
+}
+.empty-state-text {
+  color: var(--text-muted);
+  text-align: center;
+  align-self: center;
+  margin: var(--space-sm) 0;
 }

@@ -22,6 +22,12 @@ async function loadEntries() {
   }
 
   entryList.innerHTML = "";
+
+  if(data.length === 0) {
+entryList.innerHTML = `<p class="empty-state-text">You have no entries yet.</p>`
+return;
+  }
+
 data.forEach((entry) => {
   const item = document.createElement("div");
   item.className = "entry-list-item";
@@ -31,8 +37,17 @@ data.forEach((entry) => {
   title.textContent = entry.title;
 
   const deleteBtn = document.createElement("button");
-  deleteBtn.classList.add("btn", "delete-btn");
-  deleteBtn.textContent = "🗑️";
+  deleteBtn.type = "button"
+  deleteBtn.classList.add("icon-btn", "delete-btn");
+  deleteBtn.title = "Delete entry";
+  deleteBtn.innerHTML = `
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <polyline points="3 6 5 6 21 6"/>
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+    <line x1="10" y1="11" x2="10" y2="17"/>
+    <line x1="14" y1="11" x2="14" y2="17"/>
+  </svg>
+`;
 
   deleteBtn.addEventListener("click", async (e) => {
     e.stopPropagation(); // prevent bubbling to item's click handler
