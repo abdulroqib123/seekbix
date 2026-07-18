@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../css/components/forms.css" />
     <link rel="stylesheet" href="../css/components/buttons.css" />
 
-
     <style>
       main {
         height: 100%;
@@ -30,9 +29,16 @@
       .authGateway h1 {
         font-size: 1.6rem;
       }
-      p {
+
+      .authGateway p {
         margin-bottom: 2rem;
       }
+
+      .logo span {
+  background: var(--gradient);
+  background-clip: text;
+  color: transparent;
+}
 
       .primaryBtn {
         color: var(--text-primary);
@@ -40,7 +46,7 @@
         margin-bottom: 0.75rem;
       }
       .secondaryBtn {
-        color: #fff !important;
+        color: var(--text-primary);
         background: var(--surface-primary);
       }
       .primaryBtn,
@@ -56,12 +62,12 @@
       .secondaryBtn:hover {
         text-decoration: none;
       }
-
-      button {
-        width: 100%;
-        display: block;
-        margin-top: 12px;
+      .primaryBtn:focus-visible,
+      .secondaryBtn:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
       }
+
       .divider {
         display: flex;
         align-items: center;
@@ -79,37 +85,28 @@
         content: "";
         flex: 1;
         height: 1px;
-        background: var(--border-light);
+        background: var(--border-primary);
       }
+
       .emailLogin:hover {
         background: var(--surface-secondary);
         border-color: var(--primary);
         color: var(--text-primary);
       }
-      .form {
-        margin-top: 50px;
-        display: none;
-      }
-      .display {
-        gap: 10px;
-        display: flex;
-      }
-      
     </style>
   </head>
   <body>
     <div id="modalContainer"></div>
     <!--ACTION MESSAGES-->
-    <div id="actionsMessage"></div>
+    <div id="actionsMessage" aria-live="polite" role="alert"></div>
     <!--INFO DISPLAY-->
-    <div id="infoDisplay"></div>
+    <div id="infoDisplay" aria-live="polite"></div>
 
     <main class="main">
       <!-- AUTH GATEWAY -->
       <div class="authGateway">
-
         <h1>
-          Welcome to <span class="logo">Seek<span>Bix</span></span>
+          Welcome to <span class="logo">Seek<span class="accent">Bix</span></span>
         </h1>
         <p class="text-muted">
           Log in to manage your docs
@@ -118,15 +115,14 @@
         <a href="login.html" class="primaryBtn emailLogin" id="emailLogin"
           >Log in with Email</a
         >
+        
         <a
           href="signup.html"
-          class="secondaryBtn  emailSignup"
+          class="secondaryBtn emailSignup"
           id="emailSignup"
           >Create an Account</a
         >
-        
       </div>
     </main>
- 
   </body>
 </html>

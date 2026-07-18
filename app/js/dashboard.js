@@ -24,55 +24,62 @@ async function loadEntries() {
 
   entryList.innerHTML = "";
 
-  if(data.length === 0) {
-entryList.innerHTML = `<p class="empty-state-text">You have no entries yet.</p>`
-return;
+  if (data.length === 0) {
+    entryList.innerHTML = `<p class="empty-state-text">You have no entries yet.</p>`;
+    return;
   }
 
-data.forEach((entry) => {
-  const item = document.createElement("div");
-  item.className = "entry-list-item";
-  item.dataset.id = entry.id;
+  data.forEach((entry) => {
+    const item = document.createElement("div");
+    item.className = "entry-list-item";
+    item.dataset.id = entry.id;
+    item.tabIndex = 0;
+    item.setAttribute("role", "button");
+    item.setAttribute("aria-label", `Open entry: ${entry.title}`);
 
-  const title = document.createElement("p");
-  title.textContent = entry.title;
+    const title = document.createElement("p");
+    title.textContent = entry.title;
 
-  const deleteBtn = document.createElement("button");
-  deleteBtn.type = "button"
-  deleteBtn.classList.add("icon-btn", "delete-btn");
-  deleteBtn.title = "Delete entry";
-  deleteBtn.innerHTML = `
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <polyline points="3 6 5 6 21 6"/>
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-    <line x1="10" y1="11" x2="10" y2="17"/>
-    <line x1="14" y1="11" x2="14" y2="17"/>
-  </svg>
-`;
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.classList.add("icon-btn", "delete-btn");
+    deleteBtn.title = "Delete entry";
+    deleteBtn.setAttribute("aria-label", "Delete entry");
+    deleteBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+        <line x1="10" y1="11" x2="10" y2="17"/>
+        <line x1="14" y1="11" x2="14" y2="17"/>
+      </svg>
+    `;
 
-  deleteBtn.addEventListener("click", async (e) => {
-    e.stopPropagation(); // prevent bubbling to item's click handler
+    deleteBtn.addEventListener("click", async (e) => {
+      e.stopPropagation();
 
-    const { error } = await supabase
-      .from("entries")
-      .delete()
-      .eq("id", entry.id);
+      const { error } = await supabase.from("entries").delete().eq("id", entry.id);
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+      if (error) {
+        console.error(error);
+        return;
+      }
 
-    if (currentEntryId === entry.id) clearEditor(); // if you're editing the one you just deleted
-    loadEntries();
+      if (currentEntryId === entry.id) clearEditor();
+      loadEntries();
+    });
+
+    item.append(title, deleteBtn);
+
+    item.addEventListener("click", () => loadEntryIntoEditor(entry));
+    item.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        loadEntryIntoEditor(entry);
+      }
+    });
+
+    entryList.appendChild(item);
   });
-
-  item.append(title, deleteBtn);
-  item.addEventListener("click", () => loadEntryIntoEditor(entry));
-  entryList.appendChild(item);
-});
-
-initSearch(loadEntryIntoEditor);
 }
 
 function loadEntryIntoEditor(entry) {
@@ -97,7 +104,7 @@ saveBtn.addEventListener("click", async () => {
   const type = entryType.value;
 
   if (!title || !content) {
-    await toastMsg("You can't submit empty content", "error")
+    await toastMsg("You can't submit empty content", "error");
     return;
   }
 
@@ -106,7 +113,6 @@ saveBtn.addEventListener("click", async () => {
   } = await supabase.auth.getUser();
 
   if (currentEntryId) {
-    // update existing
     const { error } = await supabase
       .from("entries")
       .update({ title, content, type, updated_at: new Date().toISOString() })
@@ -117,7 +123,6 @@ saveBtn.addEventListener("click", async () => {
       return;
     }
   } else {
-    // insert new
     const { data, error } = await supabase
       .from("entries")
       .insert({ title, content, type, user_id: user.id })
@@ -128,22 +133,23 @@ saveBtn.addEventListener("click", async () => {
       console.error(error);
       return;
     }
-    currentEntryId = data.id; // now editing the entry we just created
+    currentEntryId = data.id;
   }
 
   loadEntries();
 });
 
-loadEntries();
-
-
-function sidebar() {
+function sidebarToggle() {
   const sidebar = document.querySelector(".sidebar");
-const menuBtn = document.getElementById("menuBtn");
-if(!menuBtn || !sidebar) return;
+  const menuBtn = document.getElementById("menuBtn");
+  if (!menuBtn || !sidebar) return;
 
-menuBtn.addEventListener("click", () => {
-  sidebar.classList.toggle("expand-sidebar");
-})
+  menuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("expand-sidebar");
+  });
 }
-sidebar()
+
+// run once, not per-render
+initSearch(loadEntryIntoEditor);
+sidebarToggle();
+loadEntries();

@@ -1,18 +1,18 @@
 /*FORMS*/
 .form {
   background-color: var(--form-bg);
-  border: 1px solid var(--border);
   background: var(--form-bg);
+  border: 1px solid var(--border-primary);
   border-radius: var(--radius-lg);
 
   display: flex;
   justify-content: center;
   flex-direction: column;
   position: relative;
-overflow-y: auto;
+  overflow-y: auto;
 
-  font-family: "Poppins", sans-serif; 
-  
+  font-family: var(--font-poppins);
+
   gap: var(--space-sm);
   margin: auto;
   padding: calc(var(--space-md) + 4px) calc(var(--space-sm) + 2px);
@@ -36,7 +36,7 @@ select {
   outline: none;
   border: 1px solid var(--border-primary);
   font-size: 1rem;
-  transition: 0.3s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   font-family: inherit;
 }
 option {
@@ -46,9 +46,10 @@ option {
   min-height: 150px;
   max-width: 100%;
 }
-.inputField:focus {
+.inputField:focus,
+select:focus {
   border-color: var(--accent);
-  background-color: var(--bg);
+  background-color: var(--input-bg);
   box-shadow: 0 0 3px var(--accent);
 }
 .inputField.error {
@@ -63,51 +64,3 @@ option {
   opacity: 0.7;
   cursor: not-allowed;
 }
-
-.add-to-collection-modal {
-  padding: 20px;
-}
-
-.modal-subtitle {
-  margin-bottom: 12px;
-  opacity: 0.7;
-}
-
-.artwork-carousel {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 10px 0;
-}
-
-.carousel-item {
-  min-width: 140px;
-  border-radius: 12px;
-  overflow: hidden;
-  scroll-snap-align: center;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.carousel-item:hover {
-  transform: translateY(-4px);
-}
-
-.carousel-item.selected {
-  border-color: var(--accent-blue);
-}
-
-.carousel-image {
-  width: 100%;
-  object-fit: cover;
-}
-.carousel-label {
-  text-align: center;
-  margin-top: 6px;
-  font-size: 0.85rem;
-  opacity: 0.8;
-}
-
-

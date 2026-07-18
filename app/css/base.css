@@ -1,4 +1,3 @@
-
 /*RESET*/
 * {
   margin: 0;
@@ -10,22 +9,22 @@
 
 /*DEFAULT THEME*/
 :root {
-    /* BACKGROUNDS */
+  /* BACKGROUNDS */
   --bg-primary: #000;
   --bg-secondary: #151821;
   --surface-primary: #1a1a1a;
   --surface-secondary: #151515;
-  
+
   /* TEXT */
   --text-primary: #f5f7fa;
   --text-secondary: #d1d5db;
   --text-muted: #9b9b9b;
 
-    /* INPUTS */
+  /* INPUTS */
   --input-bg: #1c1c1c;
   --input-color: #ffffff;
 
-    /* BORDERS */
+  /* BORDERS */
   --border-primary: #2c2f36;
   --border-secondary: #3a3d45;
 
@@ -35,13 +34,13 @@
   --header-bg: rgba(128, 128, 128, 0.258);
   --navBtn-bg: #222;
   --neutral: #9ca3af;
-  --link: #0393d6;
-  
-  --primary: #00bf63;
---primary-light: #2fe085;
+  --link: #00aeff;
 
---accent: #2fb1e0;
---accent-dark: #0076a1;
+  --primary: #00bf63;
+  --primary-light: #2fe085;
+
+  --accent: #2fb1e0;
+  --accent-dark: #0076a1;
 
   --filter: blur(10px);
 
@@ -54,19 +53,19 @@
   --warning: #f59e0b;
   --danger: #ff2613;
 
-    /* RADIUS */
+  /* RADIUS */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 28px;
 
-    /* SPACING */
+  /* SPACING */
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
   --space-xl: 32px;
-  
---font-poppins: "Poppins", sans-serif;
+
+  --font-poppins: "Poppins", sans-serif;
   --gradient: linear-gradient(to right, var(--primary), var(--accent));
 }
 
@@ -83,7 +82,7 @@ body {
   color: var(--text-primary);
   background: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
-  font-family: var(--font-poppins);  
+  font-family: var(--font-poppins);
   -moz-osx-font-smoothing: grayscale;
 }
 
@@ -100,7 +99,7 @@ body {
 ::-webkit-scrollbar-thumb {
   background: var(--border-secondary);
   border-radius: var(--radius-sm);
-  border: 2px solid var(--bg-primary); /* creates a subtle inset gap */
+  border: 2px solid var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -114,13 +113,12 @@ body {
 }
 
 .main-content {
-    padding: 0;
-  }
-  .main-content-inner {
-  padding: 0 var(--space-lg);
-
+  padding: 0;
 }
- 
+.main-content-inner {
+  padding: 0 var(--space-lg);
+}
+
 /*TYPOGRAPHY */
 h1,
 h2,
@@ -144,9 +142,13 @@ a:hover {
   color: var(--accent);
   text-decoration: underline;
 }
+a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
 .logo {
   font-size: 2rem;
-  font-family: var(--font-chewy);  
+  font-family: var(--font-poppins);
   font-weight: 600;
   text-align: center;
   margin-top: var(--space-md);
@@ -157,8 +159,8 @@ a:hover {
   color: transparent;
 }
 .divider {
-  background: var(--muted);
-  color: var(--muted);
+  background: var(--text-muted);
+  color: var(--text-muted);
   display: block;
   width: 100%;
   height: 1px;
@@ -188,7 +190,19 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: var(--filter);
   padding: var(--space-md);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

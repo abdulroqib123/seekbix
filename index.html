@@ -23,14 +23,14 @@
       backdrop-filter: var(--filter);
     }
     .logo {
-  font-size: 1.4rem;
-  margin: 0;
-}
-.logo span {
-  background: var(--gradient);
-  background-clip: text;
-  color: transparent;
-}
+      font-size: 1.4rem;
+      margin: 0;
+    }
+    .logo span {
+      background: var(--gradient);
+      background-clip: text;
+      color: transparent;
+    }
     .nav a { font-size: 0.95rem; color: var(--text-secondary); }
 
     .hero {
@@ -48,7 +48,7 @@
     .hero h1 .accent {
       color: var(--primary-light);
       border-bottom: 5px solid var(--primary);
-      }
+    }
     .hero p.sub {
       color: var(--text-secondary);
       font-size: 1.1rem;
@@ -56,7 +56,6 @@
       margin: 0 auto var(--space-xl);
     }
 
-   
     .cta-row {
       display: flex;
       gap: var(--space-sm);
@@ -64,13 +63,12 @@
       margin-bottom: var(--space-xl);
     }
     .cta-row a {
-        text-decoration: none;
+      color: #000;
+      text-decoration: none;
       padding: 0.75rem 1.5rem;
       border-radius: var(--radius-sm);
       font-weight: 600;
       font-size: 0.95rem;
-            color: #05130c;
-
     }
     .btn-primary {
       background: var(--primary);
@@ -103,7 +101,7 @@
       border-radius: var(--radius-sm);
       margin-bottom: var(--space-sm);
     }
-    .search-demo .bar svg { flex-shrink: 0; color: var(--muted); }
+    .search-demo .bar svg { flex-shrink: 0; color: var(--text-muted); }
     .search-demo .typed {
       font-family: 'JetBrains Mono', 'Courier New', monospace;
       font-size: 0.95rem;
@@ -112,13 +110,13 @@
       overflow: hidden;
       border-right: 2px solid var(--primary);
       width: 0;
-      animation: type 2.5s steps(22) 0.6s forwards, blink 0.8s step-end infinite;
+      animation: type 2.5s steps(13) 0.6s forwards, blink 0.8s step-end infinite;
     }
     .search-demo .kbd {
       margin-left: auto;
       font-family: monospace;
       font-size: 0.75rem;
-      color: var(--muted);
+      color: var(--text-muted);
       border: 1px solid var(--border-secondary);
       padding: 0.1rem 0.4rem;
       border-radius: 4px;
@@ -137,9 +135,9 @@
       opacity: 0;
       animation: reveal 0.4s ease forwards;
     }
-    .search-demo .result:nth-child(1) { animation-delay: 2.6s; }
-    .search-demo .result:nth-child(2) { animation-delay: 2.85s; }
-    .search-demo .result:nth-child(3) { animation-delay: 3.1s; }
+    .search-demo .result:nth-child(1) { animation-delay: 3.2s; }
+    .search-demo .result:nth-child(2) { animation-delay: 3.45s; }
+    .search-demo .result:nth-child(3) { animation-delay: 3.7s; }
     .search-demo .result:hover { background: var(--hover-bg); }
     .search-demo .result .title { font-size: 0.9rem; color: var(--text-primary); }
     .search-demo .result .type {
@@ -159,7 +157,7 @@
       to { opacity: 1; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .search-demo .typed { animation: none; width: 21ch; border-right: none; }
+      .search-demo .typed { animation: none; width: 13ch; border-right: none; }
       .search-demo .result { animation: none; opacity: 1; }
     }
 
@@ -173,17 +171,17 @@
       border-top: 1px solid var(--border-primary);
     }
     .feature {
-        background-color: var(--surface-primary);
-        padding: var(--space-sm);
-        border-radius: var(--radius-sm);
+      background-color: var(--surface-primary);
+      padding: var(--space-sm);
+      border-radius: var(--radius-sm);
     }
-    .feature h3 { font-size: 1.05rem; margin-bottom: var(--space-xs); }
+    .feature h2 { font-size: 1.05rem; margin-bottom: var(--space-xs); }
     .feature p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
 
     footer {
       text-align: center;
       padding: var(--space-xl) var(--space-lg);
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 0.85rem;
     }
 
@@ -204,11 +202,11 @@
     <p class="sub">SeekBix is one search bar over everything your team has written down. Notes, docs, FAQs. No more digging through five tools to find one answer.</p>
 
     <div class="cta-row">
-      <a href="app/auth/signup.html" class="btn-primary">Create your workspace</a>
+      <a href="app/auth/signup.html" class="btn-primary">Create your account</a>
       <a href="app/auth/login.html" class="btn-ghost">Log in</a>
     </div>
 
-    <div class="search-demo">
+    <div class="search-demo" aria-hidden="true">
       <div class="bar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -226,15 +224,15 @@
 
   <section class="features">
     <div class="feature">
-      <h3>Instant, not eventual</h3>
+      <h2>Instant, not eventual</h2>
       <p>Results as you type. No page reloads, no waiting on a slow index.</p>
     </div>
     <div class="feature">
-      <h3>Private by default</h3>
-      <p>Every workspace is isolated. Your entries are never visible to anyone else.</p>
+      <h2>Private by default</h2>
+      <p>Every account is isolated. Your entries are never visible to anyone else.</p>
     </div>
     <div class="feature">
-      <h3>No setup tax</h3>
+      <h2>No setup tax</h2>
       <p>No folders to build, no tags to invent first. Write it down, find it later.</p>
     </div>
   </section>

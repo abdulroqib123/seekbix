@@ -1,7 +1,7 @@
 import { supabase } from "../supabase.js";
 import { toastMsg } from "../components/toast.js";
 
-//login funtion
+// login function
 async function login(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -16,17 +16,29 @@ async function login(email, password) {
   return true;
 }
 
-//Login form
-export function loginFuntion() {
+// only allow internal, relative redirect targets
+function getSafeRedirect(redirectTo) {
+  if (!redirectTo) return null;
+
+  const decoded = decodeURIComponent(redirectTo);
+
+  // must start with a single "/" (relative path), never "//" or a full URL
+  if (decoded.startsWith("/") && !decoded.startsWith("//")) {
+    return decoded;
+  }
+
+  return null;
+}
+
+// Login form
+export function loginFunction() {
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
     loginForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const email = document.getElementById("userLoginEmailInput").value.trim();
-      const password = document
-        .getElementById("userLoginPasswordInput")
-        .value.trim();
+      const password = document.getElementById("userLoginPasswordInput").value;
 
       if (!password || !email) {
         toastMsg("All fields must not be empty", "error");
@@ -35,23 +47,16 @@ export function loginFuntion() {
 
       const button = document.getElementById("loginBtn");
       button.disabled = true;
-      button.textContent = "logging in...";
+      button.textContent = "Logging in...";
 
       try {
         const success = await login(email, password);
 
         if (success) {
-          // After successful login/signup:
           const params = new URLSearchParams(window.location.search);
-          const redirectTo = params.get("redirect");
+          const safeRedirect = getSafeRedirect(params.get("redirect"));
 
-          if (redirectTo) {
-            // Send them back to the invite page with the token
-            window.location.href = decodeURIComponent(redirectTo);
-          } else {
-            // Default behavior
-            window.location.href = "../pages/dashboard.html";
-          }
+          window.location.href = safeRedirect || "../pages/dashboard.html";
         }
       } finally {
         button.disabled = false;
@@ -60,6 +65,5 @@ export function loginFuntion() {
     });
   }
 }
-loginFuntion();
 
-
+loginFunction();

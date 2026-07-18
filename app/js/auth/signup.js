@@ -1,8 +1,20 @@
 import { supabase } from "../supabase.js";
 import { toastMsg } from "../components/toast.js";
-import { loadComponent } from "../components/loadComponent.js";
 
-//Signup funtion
+// only allow internal, relative redirect targets
+function getSafeRedirect(redirectTo) {
+  if (!redirectTo) return null;
+
+  const decoded = decodeURIComponent(redirectTo);
+
+  if (decoded.startsWith("/") && !decoded.startsWith("//")) {
+    return decoded;
+  }
+
+  return null;
+}
+
+// Signup function
 async function signup(name, email, password) {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -23,7 +35,7 @@ async function signup(name, email, password) {
   return true;
 }
 
-//Signup form
+// Signup form
 const signupForm = document.getElementById("signupForm");
 if (signupForm) {
   signupForm.addEventListener("submit", async (e) => {
@@ -31,12 +43,10 @@ if (signupForm) {
 
     const name = document.getElementById("signupNameInput").value.trim();
     const email = document.getElementById("userSignupEmailInput").value.trim();
-    const password = document
-      .getElementById("userSignupPasswordInput")
-      .value.trim();
-    const confirmPassword = document
-      .getElementById("userSignupConfirmPasswordInput")
-      .value.trim();
+    const password = document.getElementById("userSignupPasswordInput").value;
+    const confirmPassword = document.getElementById(
+      "userSignupConfirmPasswordInput",
+    ).value;
 
     if (!name || !password || !email || !confirmPassword) {
       toastMsg("All fields must not be empty", "error");
@@ -44,7 +54,7 @@ if (signupForm) {
     } else if (!email.includes("@")) {
       toastMsg("Please enter a valid email", "error");
       return;
-    } else if (password != confirmPassword) {
+    } else if (password !== confirmPassword) {
       toastMsg("Passwords do not match", "error");
       return;
     } else if (password.length < 6) {
@@ -52,30 +62,22 @@ if (signupForm) {
       return;
     }
 
-    //disable button
     const button = signupForm.querySelector("button");
     button.disabled = true;
-    button.textContent = "signing up...";
+    button.textContent = "Signing up...";
 
     try {
       const success = await signup(name, email, password);
 
       if (success) {
-        // After successful login/signup:
         const params = new URLSearchParams(window.location.search);
-        const redirectTo = params.get("redirect");
+        const safeRedirect = getSafeRedirect(params.get("redirect"));
 
-        if (redirectTo) {
-          // Send them back to the invite page with the token
-          window.location.href = decodeURIComponent(redirectTo);
-        } else {
-          // Default behavior
-          window.location.href = "../pages/dashboard.html";
-        }
+        window.location.href = safeRedirect || "../pages/dashboard.html";
       }
     } finally {
       button.disabled = false;
-      button.textContent = "signup";
+      button.textContent = "Signup";
     }
   });
 }

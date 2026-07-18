@@ -10,55 +10,60 @@
     <link rel="stylesheet" href="../css/components/buttons.css">
     <link rel="stylesheet" href="../css/components/forms.css">
     <link rel="stylesheet" href="../css/components/toast.css">
-<link rel="stylesheet" href="../css/components/search.css">
+    <link rel="stylesheet" href="../css/components/search.css">
 </head>
 <body>
-    <button type="button" class="icon-btn" id="menuBtn">
+    <h1 class="visually-hidden">SeekBix Dashboard</h1>
+
+    <button type="button" class="icon-btn" id="menuBtn" title="Menu" aria-label="Toggle entry list">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <line x1="3" y1="6" x2="21" y2="6"/>
-  <line x1="3" y1="12" x2="21" y2="12"/>
-  <line x1="3" y1="18" x2="21" y2="18"/>
-</svg>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
     </button>
-    <button type="button" id="logoutBtn" class=" icon-btn" title="Logout" aria-label="Logout">
-<!-- inline SVG so it inherits color via currentColor, no image request needed -->
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-<polyline points="16 17 21 12 16 7"/>
-<line x1="21" y1="12" x2="9" y2="12"/>
-</svg>
-</button>
-    <aside class="sidebar">
-        <button type="btn" id="newEntry" class="btn btn-primary new-entry">+ Add entry</button>
+    <button type="button" id="logoutBtn" class="icon-btn" title="Logout" aria-label="Logout">
+        <!-- inline SVG so it inherits color via currentColor, no image request needed -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+    </button>
+
+    <aside class="sidebar" aria-label="Your entries">
+        <button type="button" id="newEntry" class="btn btn-primary new-entry">+ Add entry</button>
         <button type="button" class="icon-btn search-btn" id="searchBtn" title="Search" aria-label="Search">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-  <circle cx="11" cy="11" r="8"/>
-  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-</svg></button>
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+        </button>
         <div class="entry-list">
-            
+
         </div>
     </aside>
+
     <main class="main-content">
-        <div id="toast"></div>
-<div id="modalContainer"></div>
+        <div id="toast" aria-live="polite" role="alert"></div>
+        <div id="modalContainer"></div>
 
-<div class="main-content-header">
-    <div class="main-content-header-inner">
-        <input type="text" class="entry-title inputField" id="entryTitle" placeholder="Title your entry">
-        <select name="entryType" class="entry-type" id="entryType">
-            <option value="note">Note</option>
-            <option value="doc">Doc</option>
-            <option value="faq">FAQ</option>
-        </select>
-    </div>
+        <div class="main-content-header">
+            <div class="main-content-header-inner">
+                <input type="text" class="entry-title inputField" id="entryTitle" placeholder="Title your entry" aria-label="Entry title">
+                <select name="entryType" class="entry-type" id="entryType" aria-label="Entry type">
+                    <option value="note">Note</option>
+                    <option value="doc">Doc</option>
+                    <option value="faq">FAQ</option>
+                </select>
+            </div>
 
-        <button type="button" class="saveBtn btn-secondary btn-pill btn" id="saveEntryBtn">Save</button>
-</div>
+            <button type="button" class="saveBtn btn-secondary btn-pill btn" id="saveEntryBtn">Save</button>
+        </div>
 
-    <div class="content-container">
-        <textarea name="contentInput" id="contentInput" class="inputField content-input" placeholder="Start typing..."></textarea>
-    </div>
+        <div class="content-container">
+            <textarea name="contentInput" id="contentInput" class="inputField content-input" placeholder="Start typing..." aria-label="Entry content"></textarea>
+        </div>
     </main>
 
     <script type="module" src="../js/auth/auth.js"></script>

@@ -6,8 +6,8 @@
   left: 50%;
   top: -100%;
   transform: translateX(-50%);
-  max-width: 300px ;
-  width: 100% ;
+  max-width: 300px;
+  width: 100%;
   padding: var(--space-xs);
   height: fit-content;
   transition: top 0.5s ease;
@@ -17,9 +17,9 @@
   text-align: center;
 }
 #toast .card {
-    display: flex;
-  justify-content: center;   
-  align-items: center;   
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: var(--bg-primary);
   margin: 0;
   min-height: 40px;
@@ -31,14 +31,14 @@
   top: 30px;
 }
 #toast.error .card {
-  border: 0.5px solid var(--danger);
+  border: 1px solid var(--danger);
 }
-.error {
+#toast .error {
   color: var(--danger);
 }
 #toast.success .card {
   border: 1px solid var(--success);
 }
-.success {
+#toast .success {
   color: var(--success);
 }

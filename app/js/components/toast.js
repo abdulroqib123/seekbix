@@ -1,21 +1,25 @@
 import { loadComponent } from "../components/loadComponent.js";
 
-export async function toastMsg(message, typeClass) {
-  // Load modal only when needed
-  await loadComponent(
-    "../components/toast.html",
-    "toast",
-  );
+let toastLoaded = false;
 
-  const msg = document.querySelector(".modalMessage");
+export async function toastMsg(message, typeClass) {
   const toast = document.getElementById("toast");
+  if (!toast) return;
+
+  // Load the toast markup once, not on every call, avoids fetch races
+  if (!toastLoaded) {
+    await loadComponent("../components/toast.html", "toast");
+    toastLoaded = true;
+  }
+
+  const msg = toast.querySelector(".modalMessage");
+  if (!msg) return;
 
   toast.classList.remove("success", "error", "warning", "info");
-
   toast.classList.add(typeClass);
 
   toast.classList.remove("slideIn");
-  void toast.offsetWidth; // <-- reflow trick
+  void toast.offsetWidth; // reflow trick to restart the CSS transition
   toast.classList.add("slideIn");
 
   msg.textContent = message;
@@ -24,7 +28,6 @@ export async function toastMsg(message, typeClass) {
     clearTimeout(toast._timeout);
   }
 
-  // Set new timeout
   toast._timeout = setTimeout(() => {
     toast.classList.remove("slideIn");
   }, 5000);

@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="../css/base.css" />
     <link rel="stylesheet" href="../css/components/forms.css" />
     <link rel="stylesheet" href="../css/components/buttons.css" />
- <link rel="stylesheet" href="../css/components/toast.css" />
- 
+    <link rel="stylesheet" href="../css/components/toast.css" />
+
     <style>
       main {
         display: flex;
@@ -28,31 +28,33 @@
         padding: var(--space-md);
         text-align: center;
       }
-      p {
+
+      .authContainer p {
         margin-bottom: 2rem;
       }
 
+      .logo span {
+  background: var(--gradient);
+  background-clip: text;
+  color: transparent;
+}
+
       .form {
         align-items: flex-start;
-        border-radius: var(--space-md);
+        border-radius: var(--radius-md);
       }
-      .display {
-        gap: 10px;
-        display: flex;
-      }
-    
     </style>
   </head>
   <body>
     <div id="modalContainer"></div>
     <!--TOAST MESSAGES-->
-    <div id="toast"></div>
+    <div id="toast" aria-live="polite" role="alert"></div>
     <!--INFO DISPLAY-->
-    <div id="infoDisplay"></div>
+    <div id="infoDisplay" aria-live="polite"></div>
 
     <main class="main">
       <h1>
-        <span class="logo">Seek<span>Bix</span></span>
+        <span class="logo">Seek<span class="accent">Bix</span></span>
       </h1>
       <p class="text-muted">
         Login to resume to your business knowledge base
@@ -70,6 +72,7 @@
             id="userLoginEmailInput"
             class="inputField"
             placeholder="e.g. example@gmail.com"
+            autocomplete="email"
             required
           />
           <label for="userLoginPasswordInput">Password</label>
@@ -79,6 +82,7 @@
             id="userLoginPasswordInput"
             class="inputField"
             placeholder="Your account password"
+            autocomplete="current-password"
             required
           />
           <button class="btn btn-pill" id="loginBtn" type="submit">Login</button>
@@ -86,8 +90,6 @@
             <a href="signup.html">New User</a>
           </div>
         </form>
-
-
       </div>
     </main>
 

@@ -2,27 +2,19 @@ export async function loadComponent(path, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const response = await fetch(path);
-  const html = await response.text();
+  try {
+    const response = await fetch(path);
 
-  container.innerHTML = html;
+    if (!response.ok) {
+      throw new Error(`Failed to load component: ${response.status}`);
+    }
 
-  attachCloseModal();
-}
+    const html = await response.text();
+    container.innerHTML = html;
 
-export function closeModal() {
-  const modalContainer = document.getElementById("modalContainer");
-
-  modalContainer.innerHTML = "";
-}
-
-function attachCloseModal() {
-  //Close modal button
-  const closeModalBtn = document.querySelector(".closeModalBtn");
-
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener("click", () => {
-      closeModal();
-    });
+  } catch (error) {
+    console.error(error);
+    container.innerHTML = `<p class="search-empty">Something went wrong loading this.</p>`;
   }
 }
+
