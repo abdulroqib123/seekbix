@@ -82,5 +82,6 @@ padding: var(--space-sm);
     height: 100%;
 }
 .content-input {
+    resize: none;
     height: 100%;
 }
