@@ -1,8 +1,8 @@
 body {
     display: grid;
     grid-template-columns: minmax(200px, 300px) 1fr;
-    padding: var(--space-lg);
-    gap: var(--space-md);
+    padding: calc(var(--space-xl) + 8px) var(--space-lg) var(--space-lg);
+    gap: var(--space-sm);
 }
 .sidebar {
     position: relative;

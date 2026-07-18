@@ -237,10 +237,16 @@ button:disabled {
 button:disabled:active {
     transform: scale(1);
 }
-#logoutBtn {
-width: fit-content;
+.search-btn {
 position: absolute;
 right: var(--space-sm);
-top: var(--space-sm);
+top: var(--space-md);
+padding: var(--space-xs) ;
+}
+#logoutBtn {
+width: fit-content;
+position: fixed;
+right: var(--space-sm);
+top: var(--space-md);
 padding: var(--space-xs) ;
 }
