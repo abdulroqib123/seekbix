@@ -120,8 +120,10 @@ saveBtn.addEventListener("click", async () => {
 
     if (error) {
       console.error(error);
+          await toastMsg(`Unable to update ${type}`, "error")
       return;
     }
+    await toastMsg(`${type} updated!`, "success")
   } else {
     const { data, error } = await supabase
       .from("entries")
@@ -131,9 +133,11 @@ saveBtn.addEventListener("click", async () => {
 
     if (error) {
       console.error(error);
+                await toastMsg(`Unable to save ${type}`, "error");
       return;
     }
     currentEntryId = data.id;
+        await toastMsg(`${type} saved!`, "success");
   }
 
   loadEntries();
