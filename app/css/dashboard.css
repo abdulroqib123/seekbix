@@ -44,6 +44,7 @@ body {
 }
 
 .sidebar {
+  overflow: hidden;
   position: relative;
   border-radius: var(--radius-md);
   padding: var(--space-sm);
