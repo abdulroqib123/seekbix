@@ -1,3 +1,4 @@
+//get and render html skeletons from components html
 export async function loadComponent(path, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SeekBix Tests</title>
+  <style>
+    body { font-family: monospace; background: #000; color: #f5f7fa; padding: 2rem; }
+    .pass { color: #00bf63; }
+    .fail { color: #ff2613; }
+    .result { margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>SeekBix Test Results</h1>
+  <div id="results">Running tests...</div>
+
+  <script type="module">
+    import { supabase } from "../app/js/supabase.js";
+
+    const results = document.getElementById("results");
+    let testEntryId = null;
+
+    function log(name, passed, detail = "") {
+      const line = document.createElement("div");
+      line.className = "result";
+      line.innerHTML = `<span class="${passed ? "pass" : "fail"}">${passed ? "PASS" : "FAIL"}</span> — ${name} ${detail ? `(${detail})` : ""}`;
+      results.appendChild(line);
+    }
+
+    async function run() {
+      results.innerHTML = "";
+
+      // must be logged in for these tests to run against RLS-protected tables
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        log("Auth check", false, "must be logged in to run tests");
+        return;
+      }
+
+      // Test 1: missing required field should fail
+      try {
+        const { error } = await supabase
+          .from("entries")
+          .insert({ content: "no title here", type: "note", user_id: user.id });
+        log("Reject entry with missing title", !!error, error ? error.message : "insert unexpectedly succeeded");
+      } catch (e) {
+        log("Reject entry with missing title", true, "threw as expected");
+      }
+
+      // Test 2: valid insert + retrieve
+      const { data: inserted, error: insertError } = await supabase
+        .from("entries")
+        .insert({ title: "Test Entry", content: "unique-test-content-marker", type: "note", user_id: user.id })
+        .select()
+        .single();
+
+      log("Insert valid entry", !insertError && !!inserted);
+      testEntryId = inserted?.id;
+
+      if (testEntryId) {
+        const { data: fetched } = await supabase
+          .from("entries")
+          .select("*")
+          .eq("id", testEntryId)
+          .single();
+        log("Retrieve inserted entry by id", fetched?.title === "Test Entry");
+
+        // Test 3: update
+        const { error: updateError } = await supabase
+          .from("entries")
+          .update({ title: "Updated Test Entry" })
+          .eq("id", testEntryId);
+
+        const { data: afterUpdate } = await supabase
+          .from("entries")
+          .select("title")
+          .eq("id", testEntryId)
+          .single();
+        log("Update persists", !updateError && afterUpdate?.title === "Updated Test Entry");
+
+        // Test 4: search matches body content, not just title
+        const { data: searchResults } = await supabase
+          .from("entries")
+          .select("*")
+          .textSearch("fts", "unique-test-content-marker", { type: "websearch" });
+        log("Search matches body content", searchResults?.some(e => e.id === testEntryId));
+
+        // Test 5: search with no matches returns empty array, not an error
+        const { data: noResults, error: searchError } = await supabase
+          .from("entries")
+          .select("*")
+          .textSearch("fts", "zzzznonexistentqueryzzzz", { type: "websearch" });
+        log("Empty search returns empty array", !searchError && Array.isArray(noResults) && noResults.length === 0);
+
+        // Test 6: delete
+        const { error: deleteError } = await supabase
+          .from("entries")
+          .delete()
+          .eq("id", testEntryId);
+
+        const { data: afterDelete } = await supabase
+          .from("entries")
+          .select("*")
+          .eq("id", testEntryId);
+        log("Delete removes entry", !deleteError && afterDelete.length === 0);
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>

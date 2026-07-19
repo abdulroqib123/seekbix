@@ -98,3 +98,7 @@ Want to run your own copy?
 ## What's next
 
 The plan is to fold SeekBix into [LogHue](https://loghue.com), an existing product with a similar search-first philosophy, rather than run it as a permanent standalone tool.
+
+## A note on this documentation
+
+Parts of this README were drafted with Claude's help, I explained what I built and how, and it helped write the documentation based on that.

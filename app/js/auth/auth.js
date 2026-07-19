@@ -10,7 +10,7 @@ if (!session) {
   window.location.href = "../auth/";
 }
 
-// also catch session expiry mid-use, not just on load
+// catch session expiry mid-use, not just on load
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_OUT" || !session) {
     window.location.href = "../auth/";
