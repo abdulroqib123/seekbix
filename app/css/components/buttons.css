@@ -230,10 +230,10 @@ button.btn {
   position: absolute;
   top: 0;
   right: var(--space-lg);
-  background: var(--warning);
-  color: #000;
+  color: var(--warning);
+  background: #2c2500;
   font-weight: 600;
-  padding: var(--space-xs);
+  padding: var(--space-sm);
   border-radius: var(--radius-sm);
   opacity: 0;
   width: max-content;

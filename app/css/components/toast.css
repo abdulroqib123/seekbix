@@ -3,14 +3,13 @@
   z-index: 9999;
   display: flex;
   align-items: center;
-  left: 50%;
-  top: -100%;
-  transform: translateX(-50%);
+  right: -100%;
+    top: 0;
   max-width: 300px;
   width: 100%;
   padding: var(--space-xs);
   height: fit-content;
-  transition: top 0.5s ease;
+  transition: right 0.5s ease, top 0.5s ease;
 }
 .toastContainer {
   width: 100%;
@@ -28,17 +27,20 @@
   padding: var(--space-xs);
 }
 #toast.slideIn {
-  top: 30px;
+  top: 10px;
+  right: 30px;
 }
 #toast.error .card {
   border: 1px solid var(--danger);
+  background: rgb(40, 2, 2);
 }
-#toast .error {
+#toast.error {
   color: var(--danger);
 }
 #toast.success .card {
   border: 1px solid var(--success);
+    background: rgb(0, 35, 12);
 }
-#toast .success {
+#toast.success {
   color: var(--success);
 }
