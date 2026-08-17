@@ -9,9 +9,8 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Supabase REST API
+      - name: Ping Supabase Auth
         run: |
-          curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+          curl -i -X GET "${{ secrets.SUPABASE_URL }}/auth/v1/health" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
             --fail
