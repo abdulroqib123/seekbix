@@ -1,0 +1,882 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=a7be733b-9d25-4c44-80bc-d84f52d4a908
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KI‑Nutzungs‑Check mit Verlauf (lokal)</title>
+    <style>
+      :root {
+        --bg: #000000;
+        --card: #111111;
+        --text: #f1f1f1;
+        --muted: #666;
+        --ok: #1a7f37;
+        --warn: #b54708;
+        --bad: #b42318;
+        --bd: #222222;
+      }
+      body {
+        font-family: system-ui, Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        margin: 1rem;
+      }
+      h1 {
+        font-size: 1.2rem;
+        margin: 0 0 0.6rem 0;
+      }
+      .tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 0.8rem;
+      }
+      .tabs button {
+        padding: 0.5rem 0.8rem;
+        border: 1px solid var(--bd);
+        border-radius: 0.6rem;
+        background: #16d0ff;
+        cursor: pointer;
+      }
+      .tabs button.active {
+        background: #16d0ffc6;
+        border-color: #c7d2fe;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 0.8rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .group h2 {
+        font-size: 1rem;
+        margin: 0.2rem 0 0.6rem 0;
+      }
+      label {
+        display: flex;
+        gap: 0.5rem;
+        align-items: flex-start;
+        margin: 0.35rem 0;
+      }
+      input[type="checkbox"] {
+        transform: scale(1.1);
+        margin-top: 0.2rem;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .result {
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.6rem;
+        border: 1px solid var(--bd);
+        display: inline-block;
+      }
+      .ok {
+        background: #c1fdc9;
+        color: var(--ok);
+        border-color: #b7e3c5;
+      }
+      .mid {
+        background: #ffd988;
+        color: var(--warn);
+        border-color: #ffd39b;
+      }
+      .bad {
+        background: #ffa0a0;
+        color: var(--bad);
+        border-color: #ffc6c3;
+      }
+      .bar {
+        height: 10px;
+        background: #eee;
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+      .fill {
+        height: 100%;
+        background: linear-gradient(90deg, #60a5fa, #34d399);
+        width: 0%;
+        transition: width 0.2s ease;
+      }
+      .row {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 0.6rem;
+      }
+      button {
+        padding: 0.6rem 0.9rem;
+        border: 1px solid #d1d5db;
+        background: #fff;
+        border-radius: 0.6rem;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #f3f4f6;
+      }
+      input[type="text"],
+      input[type="date"] {
+        border: 1px solid var(--bd);
+        padding: 0.5rem 0.6rem;
+        border-radius: 0.5rem;
+        width: 100%;
+        color: #fff;
+        background: var(--bd);
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0.5rem;
+      }
+      th,
+      td {
+        border-top: 1px solid var(--bd);
+        padding: 0.5rem 0.4rem;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--bd);
+      }
+      .pill {
+        display: inline-block;
+        padding: 0.1rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        border: 1px solid var(--bd);
+        margin-right: 0.25rem;
+      }
+      .pill.ok {
+        background: #e9f7ee;
+        color: var(--ok);
+        border-color: #b7e3c5;
+      }
+      .pill.mid {
+        background: #fff7e6;
+        color: var(--warn);
+        border-color: #ffd39b;
+      }
+      .pill.bad {
+        background: #fdeceb;
+        color: var(--bad);
+        border-color: #f3b5b2;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+      }
+      .stat {
+        background: var(--bd);
+        border: 1px solid var(--bd);
+        border-radius: 0.6rem;
+        padding: 0.6rem 0.8rem;
+      }
+      .small {
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      KI‑Nutzungs‑Check – Unterstützung vs. Auslagerung (mit Verlauf, lokal)
+    </h1>
+
+    <div class="tabs">
+      <button id="tabCheck" class="active">Check</button>
+      <button id="tabHistory">Verlauf</button>
+    </div>
+
+    <section id="viewCheck">
+      <div class="card grid2">
+        <div>
+          <label class="small muted"
+            >Datum
+            <input type="date" id="fieldDate" />
+          </label>
+        </div>
+        <div>
+          <label class="small muted"
+            >Fach (optional)
+            <input type="text" id="fieldSubject" placeholder="z. B. Deutsch" />
+          </label>
+        </div>
+        <div>
+          <label class="small muted"
+            >Aufgabe (optional)
+            <input
+              type="text"
+              id="fieldTask"
+              placeholder="z. B. Erörterung: soziale Medien"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="card cols">
+        <div class="group">
+          <h2>Unterstützende Nutzung</h2>
+          <label
+            ><input type="checkbox" data-sup value="ideen" />
+            Ideen/Brainstorming</label
+          >
+          <label
+            ><input type="checkbox" data-sup value="struktur" />
+            Struktur/Gliederung erarbeiten</label
+          >
+          <label
+            ><input type="checkbox" data-sup value="gegen" />
+            Gegenargumente/Alternative Sichtweisen</label
+          >
+          <label
+            ><input type="checkbox" data-sup value="korrektur" />
+            Sprach-/Rechtschreibkorrektur</label
+          >
+          <label
+            ><input type="checkbox" data-sup value="zusammenfassung" />
+            Zusammenfassung als Einstieg/Überblick</label
+          >
+          <label
+            ><input type="checkbox" data-sup value="quellenhinweis" />
+            Quellenhinweise/Recherche‑Start</label
+          >
+          <label
+            ><input type="checkbox" data-sup value="bildideen" />
+            Bild-/Grafikideen</label
+          >
+        </div>
+        <div class="group">
+          <h2>Auslagernde Nutzung</h2>
+          <label
+            ><input type="checkbox" data-del value="text11" /> Textpassagen 1:1
+            von KI übernommen</label
+          >
+          <label
+            ><input type="checkbox" data-del value="loesung" /> Aufgabenlösung
+            vollständig von KI übernommen</label
+          >
+          <label
+            ><input type="checkbox" data-del value="paraphrase" /> Umformulieren
+            ohne eigenes Verständnis</label
+          >
+          <label
+            ><input type="checkbox" data-del value="quellenroh" />
+            Quellen/Zitate ungeprüft übernommen</label
+          >
+          <label
+            ><input type="checkbox" data-del value="code" /> Code/Beispiele ohne
+            Verständnis übernommen</label
+          >
+          <label
+            ><input type="checkbox" data-del value="autooutline" /> Gliederung +
+            große Textteile von KI erstellen lassen</label
+          >
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Qualitäts‑Checks (optional)</h2>
+        <label><input type="checkbox" id="checkFacts" /> Fakten geprüft</label>
+        <label
+          ><input type="checkbox" id="checkBias" /> Einseitigkeit/Bias
+          geprüft</label
+        >
+        <label
+          ><input type="checkbox" id="checkRewrite" /> KI‑Text aktiv
+          überarbeitet (eigene Formulierungen)</label
+        >
+      </div>
+
+      <div class="card">
+        <h2>Ergebnis</h2>
+        <div id="resultBadge" class="result mid">Bitte Auswahl treffen</div>
+        <div class="bar"><div id="barFill" class="fill"></div></div>
+        <p class="small muted" id="explain">
+          Der Support‑Index zeigt den Anteil „Unterstützung“ (rechts = mehr
+          Unterstützung).
+        </p>
+        <div class="row">
+          <button id="saveEntryBtn">Eintrag speichern</button>
+          <button id="copyBtn">Kurzbericht kopieren</button>
+          <button id="resetSelBtn">Auswahl zurücksetzen</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="viewHistory" style="display: none">
+      <div class="card">
+        <h2>Zeitraum filtern</h2>
+        <div class="row">
+          <label>Von <input type="date" id="filterFrom" /></label>
+          <label>Bis <input type="date" id="filterTo" /></label>
+          <button id="btnThisWeek">Diese Woche</button>
+          <button id="btn30">Letzte 30 Tage</button>
+          <button id="btnAll">Alles</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Übersicht</h2>
+        <div class="stats">
+          <div class="stat">
+            <strong>Durchschnittlicher Support‑Index</strong><br /><span
+              id="statAvg"
+              >–</span
+            >
+          </div>
+          <div class="stat">
+            <strong>Verteilung</strong><br /><span id="statDist">–</span>
+          </div>
+          <div class="stat">
+            <strong>Anzahl Einträge</strong><br /><span id="statCount">0</span>
+          </div>
+        </div>
+        <p class="small muted" id="statTop">
+          Top‑Kategorien – Unterstützung: –, Auslagerung: –
+        </p>
+        <div class="row">
+          <button id="btnCopySummary">Zeitraum‑Zusammenfassung kopieren</button>
+          <button id="btnExportCSV">CSV exportieren</button>
+          <button id="btnDeleteAll">Alles löschen</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Einträge</h2>
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Fach/Aufgabe</th>
+              <th>Ergebnis</th>
+              <th>Unterstützung</th>
+              <th>Auslagerung</th>
+              <th>Checks</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p class="small muted">
+          Tipp: Nutze den Filter oben, um den Zeitraum einzugrenzen.
+        </p>
+      </div>
+    </section>
+
+    <script>
+      (function () {
+        // Elements
+        const sup = Array.from(document.querySelectorAll("[data-sup]"));
+        const del = Array.from(document.querySelectorAll("[data-del]"));
+        const checks = ["checkFacts", "checkBias", "checkRewrite"].map((id) =>
+          document.getElementById(id),
+        );
+        const badge = document.getElementById("resultBadge");
+        const bar = document.getElementById("barFill");
+        const explain = document.getElementById("explain");
+        const fieldDate = document.getElementById("fieldDate");
+        const fieldSubject = document.getElementById("fieldSubject");
+        const fieldTask = document.getElementById("fieldTask");
+
+        const tblBody = document.querySelector("#tbl tbody");
+        const statAvg = document.getElementById("statAvg");
+        const statDist = document.getElementById("statDist");
+        const statCount = document.getElementById("statCount");
+        const statTop = document.getElementById("statTop");
+        const filterFrom = document.getElementById("filterFrom");
+        const filterTo = document.getElementById("filterTo");
+
+        const LS_SEL = "ki_usage_check_v1";
+        const LS_LOG = "ki_usage_log_v1";
+
+        // Utility
+        function todayISO() {
+          const d = new Date();
+          return d.toISOString().slice(0, 10);
+        }
+        function fmtDate(iso) {
+          try {
+            return new Date(iso + "T00:00:00").toLocaleDateString("de-DE");
+          } catch (e) {
+            return iso;
+          }
+        }
+        function clsFromIdx(idx) {
+          return idx >= 0.66 ? "ok" : idx >= 0.45 ? "mid" : "bad";
+        }
+        function labelFromCls(cls) {
+          return cls === "ok"
+            ? "Hauptsächlich Unterstützung"
+            : cls === "mid"
+              ? "Gemischt"
+              : "Starke Auslagerung";
+        }
+
+        // Persist selection (for convenience)
+        function saveSel() {
+          const data = {
+            sup: sup.filter((c) => c.checked).map((c) => c.value),
+            del: del.filter((c) => c.checked).map((c) => c.value),
+            checks: checks.map((c) => c.checked),
+            date: fieldDate.value || todayISO(),
+            subject: fieldSubject.value || "",
+            task: fieldTask.value || "",
+          };
+          localStorage.setItem(LS_SEL, JSON.stringify(data));
+        }
+        function loadSel() {
+          try {
+            const d = JSON.parse(localStorage.getItem(LS_SEL));
+            if (d) {
+              sup.forEach((c) => (c.checked = d.sup?.includes(c.value)));
+              del.forEach((c) => (c.checked = d.del?.includes(c.value)));
+              checks.forEach((c, i) => (c.checked = !!d.checks?.[i]));
+              fieldDate.value = d.date || todayISO();
+              fieldSubject.value = d.subject || "";
+              fieldTask.value = d.task || "";
+            } else {
+              fieldDate.value = todayISO();
+            }
+          } catch (e) {
+            fieldDate.value = todayISO();
+          }
+        }
+
+        // Compute Support Index
+        function compute() {
+          const s = sup.filter((c) => c.checked).length;
+          const d = del.filter((c) => c.checked).length;
+          let sEff = s;
+          let dEff = d * 1.5; // Delegation stärker gewichten
+          const facts = document.getElementById("checkFacts").checked;
+          const rewrite = document.getElementById("checkRewrite").checked;
+          if (facts && rewrite) sEff += 0.5;
+          if (!facts && !rewrite && d > 0) dEff += 0.5;
+
+          let idx = null;
+          if (sEff + dEff > 0) idx = sEff / (sEff + dEff);
+
+          let cls = "mid",
+            text = "Bitte Auswahl treffen",
+            percent = 50;
+          if (idx !== null) {
+            percent = Math.round(idx * 100);
+            if (idx >= 0.66) {
+              cls = "ok";
+              text = "Hauptsächlich Unterstützung";
+            } else if (idx >= 0.45) {
+              cls = "mid";
+              text = "Gemischt";
+            } else {
+              cls = "bad";
+              text = "Starke Auslagerung des Denkens";
+            }
+          }
+          badge.className = "result " + cls;
+          badge.textContent =
+            idx === null
+              ? "Bitte Auswahl treffen"
+              : `${text} – Support‑Index: ${percent}%`;
+          bar.style.width = percent + "%";
+          explain.textContent =
+            "Support‑Index = Anteil „Unterstützung“ relativ zu „Auslagerung“.";
+          saveSel();
+          return { idx, cls, percent };
+        }
+
+        function currentSelection() {
+          return {
+            dateISO: fieldDate.value || todayISO(),
+            subject: fieldSubject.value?.trim() || "",
+            task: fieldTask.value?.trim() || "",
+            sup: sup.filter((c) => c.checked).map((c) => c.value),
+            del: del.filter((c) => c.checked).map((c) => c.value),
+            checks: {
+              facts: document.getElementById("checkFacts").checked,
+              bias: document.getElementById("checkBias").checked,
+              rewrite: document.getElementById("checkRewrite").checked,
+            },
+          };
+        }
+
+        // Save entry to log
+        function loadLog() {
+          try {
+            return JSON.parse(localStorage.getItem(LS_LOG)) || [];
+          } catch (e) {
+            return [];
+          }
+        }
+        function saveLog(arr) {
+          localStorage.setItem(LS_LOG, JSON.stringify(arr));
+        }
+        function saveEntry() {
+          const sel = currentSelection();
+          const m = compute();
+          const any = sel.sup.length + sel.del.length;
+          if (any === 0) {
+            alert("Bitte wähle mindestens eine Nutzung aus.");
+            return;
+          }
+          const entry = {
+            id: Date.now().toString(36),
+            timestamp: Date.now(),
+            dateISO: sel.dateISO,
+            subject: sel.subject,
+            task: sel.task,
+            sup: sel.sup,
+            del: sel.del,
+            checks: sel.checks,
+            idx: m.idx ?? null,
+            cls: m.cls,
+            percent: m.percent,
+          };
+          const log = loadLog();
+          log.push(entry);
+          saveLog(log);
+          alert("Eintrag gespeichert.");
+          // optional: nur Check-Auswahl zurücksetzen
+          // [...sup, ...del].forEach(c=> c.checked=false); checks.forEach(c=> c.checked=false); compute();
+          renderHistory(); // Refresh if open
+        }
+
+        // Summary/Copy/Export
+        function summaryText(entry) {
+          const supLabels = labelsFromValues(entry.sup, true);
+          const delLabels = labelsFromValues(entry.del, false);
+          const facts = entry.checks.facts ? "Fakten✅" : "Fakten⚠️";
+          const bias = entry.checks.bias ? "Bias✅" : "Bias⚠️";
+          const rewrite = entry.checks.write
+            ? "Überarbeitet✅"
+            : "Überarbeitet" + (entry.checks.rewrite ? "✅" : "⚠️"); // fallback
+          const label = labelFromCls(entry.cls);
+          return [
+            `Datum: ${fmtDate(entry.dateISO)}`,
+            `Ergebnis: ${label} – Support‑Index: ${entry.percent}%`,
+            `Unterstützung: ${supLabels || "–"}`,
+            `Auslagerung: ${delLabels || "–"}`,
+            `Checks: ${facts}, ${entry.checks.bias ? "Bias✅" : "Bias⚠️"}, ${entry.checks.rewrite ? "Überarbeitet✅" : "Überarbeitet⚠️"}`,
+            entry.subject ? `Fach: ${entry.subject}` : "",
+            entry.task ? `Aufgabe: ${entry.task}` : "",
+          ]
+            .filter(Boolean)
+            .join(" | ");
+        }
+        function labelsFromValues(vals, isSup) {
+          const mapSup = {
+            ideen: "Ideen/Brainstorming",
+            struktur: "Struktur/Gliederung erarbeiten",
+            gegen: "Gegenargumente/Alternative Sichtweisen",
+            korrektur: "Sprach-/Rechtschreibkorrektur",
+            zusammenfassung: "Zusammenfassung (Überblick)",
+            quellenhinweis: "Quellenhinweise/Recherche‑Start",
+            bildideen: "Bild-/Grafikideen",
+          };
+          const mapDel = {
+            text11: "Text 1:1 übernommen",
+            loesung: "Komplette Lösung übernommen",
+            paraphrase: "Paraphrase ohne Verständnis",
+            quellenroh: "Quellen ungeprüft",
+            code: "Code ohne Verständnis",
+            autooutline: "Gliederung + große Textteile per KI",
+          };
+          const map = isSup ? mapSup : mapDel;
+          return (vals || []).map((v) => map[v] || v).join(", ");
+        }
+
+        function copyCurrentSummary() {
+          const sel = currentSelection();
+          const tmp = compute();
+          const entry = {
+            dateISO: sel.dateISO,
+            subject: sel.subject,
+            task: sel.task,
+            sup: sel.sup,
+            del: sel.del,
+            checks: sel.checks,
+            percent: tmp.percent,
+            cls: tmp.cls,
+          };
+          const txt = summaryText(entry);
+          navigator.clipboard
+            ?.writeText(txt)
+            .then(() => alert("Kurzbericht kopiert:\n" + txt))
+            .catch(() => prompt("Kopiere den Text:", txt));
+        }
+
+        // History view
+        function inRange(dateISO, fromISO, toISO) {
+          if (fromISO && dateISO < fromISO) return false;
+          if (toISO && dateISO > toISO) return false;
+          return true;
+        }
+        function renderHistory() {
+          const log = loadLog().sort((a, b) =>
+            a.dateISO < b.dateISO ? 1 : -1,
+          );
+          const from = filterFrom.value || null;
+          const to = filterTo.value || null;
+          const items = log.filter((e) => inRange(e.dateISO, from, to));
+          // Stats
+          statCount.textContent = String(items.length);
+          if (items.length === 0) {
+            statAvg.textContent = "–";
+            statDist.textContent = "–";
+            statTop.textContent =
+              "Top‑Kategorien – Unterstützung: –, Auslagerung: –";
+          } else {
+            const avg = Math.round(
+              items.reduce((a, e) => a + (e.percent || 0), 0) / items.length,
+            );
+            const cOk = items.filter((e) => e.cls === "ok").length;
+            const cMid = items.filter((e) => e.cls === "mid").length;
+            const cBad = items.filter((e) => e.cls === "bad").length;
+            statAvg.textContent = `${avg}%`;
+            statDist.textContent = `Unterstützung: ${cOk} • Gemischt: ${cMid} • Auslagerung: ${cBad}`;
+            // Top categories
+            const countMap = (arr) =>
+              arr.reduce((m, v) => ((m[v] = (m[v] || 0) + 1), m), {});
+            const supAll = items.flatMap((e) => e.sup || []);
+            const delAll = items.flatMap((e) => e.del || []);
+            const top3 = (map) =>
+              Object.entries(map)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 3)
+                .map(([k, v]) => `${k}(${v})`)
+                .join(", ") || "–";
+            statTop.textContent = `Top‑Kategorien – Unterstützung: ${top3(countMap(supAll))} | Auslagerung: ${top3(countMap(delAll))}`;
+          }
+          // Table
+          tblBody.innerHTML = "";
+          items.forEach((e) => {
+            const tr = document.createElement("tr");
+            const clsLabel = labelFromCls(e.cls);
+            tr.innerHTML = `
+        <td>${fmtDate(e.dateISO)}</td>
+        <td class="small">${e.subject || ""}${e.task ? (e.subject ? " – " : "") + e.task : ""}</td>
+        <td><span class="pill ${e.cls}">${clsLabel}</span><br><span class="small muted">Index: ${e.percent}%</span></td>
+        <td class="small">${labelsFromValues(e.sup, true) || "–"}</td>
+        <td class="small">${labelsFromValues(e.del, false) || "–"}</td>
+        <td class="small">${e.checks.facts ? "Fakten✅" : "Fakten⚠️"}, ${e.checks.bias ? "Bias✅" : "Bias⚠️"}, ${e.checks.rewrite ? "Überarbeitet✅" : "Überarbeitet⚠️"}</td>
+        <td><button data-delid="${e.id}">Löschen</button></td>
+      `;
+            tblBody.appendChild(tr);
+          });
+          // Delete handlers
+          tblBody.querySelectorAll("button[data-delid]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-delid");
+              if (confirm("Diesen Eintrag löschen?")) {
+                const all = loadLog().filter((x) => x.id !== id);
+                saveLog(all);
+                renderHistory();
+              }
+            });
+          });
+        }
+
+        // Export CSV
+        function exportCSV() {
+          const from = filterFrom.value || null;
+          const to = filterTo.value || null;
+          const rows = [
+            [
+              "Datum",
+              "Fach",
+              "Aufgabe",
+              "SupportIndex%",
+              "Einstufung",
+              "Unterstützung",
+              "Auslagerung",
+              "Fakten",
+              "Bias",
+              "Überarbeitet",
+            ],
+          ];
+          const items = loadLog().filter((e) => inRange(e.dateISO, from, to));
+          items.forEach((e) => {
+            rows.push([
+              e.dateISO,
+              e.subject || "",
+              e.task || "",
+              e.percent || "",
+              labelFromCls(e.cls),
+              labelsFromValues(e.sup, true),
+              labelsFromValues(e.del, false),
+              e.checks.facts ? "Ja" : "Nein",
+              e.checks.bias ? "Ja" : "Nein",
+              e.checks.rewrite ? "Ja" : "Nein",
+            ]);
+          });
+          const csv = rows
+            .map((r) =>
+              r
+                .map((v) => {
+                  const s = (v ?? "").toString().replace(/"/g, '""');
+                  return `"${s}"`;
+                })
+                .join(","),
+            )
+            .join("\n");
+          const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "ki-nutzungscheck.csv";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        }
+
+        function copyPeriodSummary() {
+          const from = filterFrom.value || null;
+          const to = filterTo.value || null;
+          const items = loadLog().filter((e) => inRange(e.dateISO, from, to));
+          if (items.length === 0) {
+            alert("Keine Einträge im gewählten Zeitraum.");
+            return;
+          }
+          const avg = Math.round(
+            items.reduce((a, e) => a + (e.percent || 0), 0) / items.length,
+          );
+          const cOk = items.filter((e) => e.cls === "ok").length;
+          const cMid = items.filter((e) => e.cls === "mid").length;
+          const cBad = items.filter((e) => e.cls === "bad").length;
+          const countMap = (arr) =>
+            arr.reduce((m, v) => ((m[v] = (m[v] || 0) + 1), m), {});
+          const supAll = items.flatMap((e) => e.sup || []);
+          const delAll = items.flatMap((e) => e.del || []);
+          const top = (map) =>
+            Object.entries(map)
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 3)
+              .map(([k, v]) => `${k}(${v})`)
+              .join(", ") || "–";
+          const txt = [
+            `KI‑Nutzungs‑Zusammenfassung`,
+            from ? `Von: ${from}` : "",
+            to ? `Bis: ${to}` : "",
+            `Einträge: ${items.length}`,
+            `Durchschnittlicher Support‑Index: ${avg}%`,
+            `Verteilung – Unterstützung: ${cOk}, Gemischt: ${cMid}, Auslagerung: ${cBad}`,
+            `Top Kategorien – Unterstützung: ${top(countMap(supAll))} | Auslagerung: ${top(countMap(delAll))}`,
+          ]
+            .filter(Boolean)
+            .join(" | ");
+          navigator.clipboard
+            ?.writeText(txt)
+            .then(() => alert("Zusammenfassung kopiert:\n" + txt))
+            .catch(() => prompt("Kopiere den Text:", txt));
+        }
+
+        // Date helpers
+        function setThisWeek() {
+          const now = new Date();
+          const day = now.getDay() || 7; // 1..7 (Mo=1)
+          const monday = new Date(now);
+          monday.setDate(now.getDate() - (day - 1));
+          const sunday = new Date(monday);
+          sunday.setDate(monday.getDate() + 6);
+          filterFrom.value = monday.toISOString().slice(0, 10);
+          filterTo.value = sunday.toISOString().slice(0, 10);
+          renderHistory();
+        }
+        function setLast30() {
+          const to = new Date();
+          const from = new Date();
+          from.setDate(to.getDate() - 30);
+          filterFrom.value = from.toISOString().slice(0, 10);
+          filterTo.value = to.toISOString().slice(0, 10);
+          renderHistory();
+        }
+        function clearFilters() {
+          filterFrom.value = "";
+          filterTo.value = "";
+          renderHistory();
+        }
+
+        // Events
+        [...sup, ...del, ...checks].forEach((c) =>
+          c.addEventListener("change", compute),
+        );
+        fieldDate.addEventListener("change", saveSel);
+        fieldSubject.addEventListener("input", saveSel);
+        fieldTask.addEventListener("input", saveSel);
+        document
+          .getElementById("saveEntryBtn")
+          .addEventListener("click", saveEntry);
+        document
+          .getElementById("copyBtn")
+          .addEventListener("click", copyCurrentSummary);
+        document.getElementById("resetSelBtn").addEventListener("click", () => {
+          if (confirm("Auswahl zurücksetzen?")) {
+            [...sup, ...del, ...checks].forEach((c) => (c.checked = false));
+            compute();
+            saveSel();
+          }
+        });
+
+        document
+          .getElementById("btnThisWeek")
+          .addEventListener("click", setThisWeek);
+        document.getElementById("btn30").addEventListener("click", setLast30);
+        document
+          .getElementById("btnAll")
+          .addEventListener("click", clearFilters);
+        document
+          .getElementById("btnExportCSV")
+          .addEventListener("click", exportCSV);
+        document
+          .getElementById("btnCopySummary")
+          .addEventListener("click", copyPeriodSummary);
+        document
+          .getElementById("btnDeleteAll")
+          .addEventListener("click", () => {
+            if (confirm("Wirklich alle Einträge löschen?")) {
+              saveLog([]);
+              renderHistory();
+            }
+          });
+
+        // Tabs
+        document.getElementById("tabCheck").addEventListener("click", () => {
+          document.getElementById("tabCheck").classList.add("active");
+          document.getElementById("tabHistory").classList.remove("active");
+          document.getElementById("viewCheck").style.display = "";
+          document.getElementById("viewHistory").style.display = "none";
+        });
+        document.getElementById("tabHistory").addEventListener("click", () => {
+          document.getElementById("tabHistory").classList.add("active");
+          document.getElementById("tabCheck").classList.remove("active");
+          document.getElementById("viewCheck").style.display = "none";
+          document.getElementById("viewHistory").style.display = "";
+          renderHistory();
+        });
+
+        // Init
+        loadSel();
+        compute();
+        // Default filters: alles
+        renderHistory();
+      })();
+    </script>
+  </body>
+</html>
